@@ -19,7 +19,7 @@
 ## Visão geral
 
 Este projeto cria um serviço de backup automatizado usando:
-- `Borg` como mecanismo de snapshot e deduplicação
+- [Borg Backup](https://www.borgbackup.org/) como mecanismo de snapshot e deduplicação
 - [Borgmatic](https://torsion.org/borgmatic/) para orquestrar backups e verificações
 - [Rclone](https://rclone.org/) para sincronizar o repositório Borg local com um remoto Google Drive
 - [Docker](https://docs.docker.com) para empacotar a aplicação em um container
@@ -55,7 +55,7 @@ Arquivos e diretórios principais:
 ```
 
 - `compose.yml` : definição do serviço Docker Compose
-- `Dockerfile` : imagem personalizada que instala Borg, borgmatic, rclone e dependências
+- `Dockerfile` : imagem personalizada que instala Borg Backup, borgmatic, rclone e dependências
 - `.env` : variáveis de ambiente sensíveis
 - `config.yaml` : configuração do borgmatic
 - `config/logrotate.conf` : configuração de rotação de logs
@@ -84,7 +84,7 @@ O `entrypoint` do container é `scripts/bootstrap.sh`, que inicializa o reposit�
 ### Dockerfile
 
 A imagem base usa `debian:bookworm-slim` e instala:
-- dependências de sistema necessárias para compilação e execução de Borg
+- dependências de sistema necessárias para compilação e execução de Borg Backup
 - `rclone`
 - Python 3, `uv`, e pacotes Python de desenvolvimento
 
