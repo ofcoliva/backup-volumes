@@ -13,6 +13,7 @@
 - [Restauração de backup](#restauração-de-backup)
 - [Logs e rotação de arquivos](#logs-e-rotação-de-arquivos)
 - [Comandos úteis de manutenção](#comandos-úteis-de-manutenção)
+	- [Execução: Docker Compose vs. Docker Engine](#comandos-úteis-de-manutenção)
 - [Segurança e recomendações](#segurança-e-recomendações)
 - [Observações importantes](#observações-importantes)
 
@@ -350,6 +351,31 @@ docker compose exec borg-backup borg extract -r /tmp/backup-local-borg::<NOME_DO
 ---
 
 ## Comandos úteis de manutenção
+### Escolhendo entre docker compose e docker
+
+Ao interagir com o seu container de backup, a escolha do comando altera o contexto de execução:
+
+* **`docker compose exec borg-backup <comando>`**: Use esta opção quando estiver no diretório raiz do projeto. Ele é mais seguro pois utiliza o nome do serviço definido no seu `compose.yml`, abstraindo o nome real do container (`backup-solution-borg-backup-1`) e garantindo que você está dentro do contexto do projeto.
+* **`docker exec -it <nome_do_container> <comando>`**: Use esta opção se estiver em outro diretório ou se precisar rodar um comando rápido sem depender da estrutura do projeto. É a forma mais direta de acessar qualquer container pelo nome que ele recebeu no Docker Engine.
+
+**Exemplo Prático (Verificação de Integridade):**
+
+Se estiver dentro da pasta do projeto:
+
+```bash
+docker compose exec borg-backup borg check --repo /volumes/backup-local-borg/ --verify-data -v
+
+```
+
+Se estiver em qualquer outro lugar (acessando pelo nome específico do container):
+
+```bash
+docker exec -it debian_container borg check --repo /volumes/backup-local-borg/ --verify-data -v
+
+```
+
+---
+
 
 ### Listar arquivos remotos do Google Drive
 
