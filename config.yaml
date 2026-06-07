@@ -1,3 +1,6 @@
+compression: lzma
+verbosity: 1
+
 source_directories:
   - /volumes/vaultwarden-data
 
