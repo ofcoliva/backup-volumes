@@ -25,7 +25,7 @@ apprise:
     - fail
   send_logs: true
   services:
-    - url: "mailtos://${SMTP_USER}:${SMTP_PASS}@smtp.gmail.com:${SMTP_PORT}?to=${SMTP_TO}&name=Borgmatic&starttls=yes || exit 1"
+    - url: "mailtos://${SMTP_USER}:${SMTP_PASS}@smtp.gmail.com:${SMTP_PORT}?to=${SMTP_TO}&name=Borgmatic&starttls=yes"
       label: alerta-email
 
 commands:
