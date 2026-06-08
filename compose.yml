@@ -20,7 +20,7 @@ services:
       - SMTP_TO=${SMTP_TO}
       - SMTP_PORT=${SMTP_PORT}
     volumes:
-      - vaultwarden-data:/volumes/vaultwarden-data:ro
+      - vaultwarden-data:/volumes/vaultwarden-data
       - backup-local-borg:/volumes/backup-local-borg
 
       - /etc/localtime:/etc/localtime:ro
