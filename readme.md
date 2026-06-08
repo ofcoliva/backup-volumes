@@ -276,12 +276,18 @@ O projeto inclui configuração automática de `logrotate` para:
 Arquivo de configuração: `logrotate/logrotate.conf`
 
 ```
+# Define o usuário para evitar erros de permissão de pasta
+su root root
+
+# Configurações padrão seguras
+compress
+missingok
+notifempty
+
+# Regras específicas para os logs do Borg
 /var/log/borg/*.log {
     monthly
     rotate 12
-    compress
-    missingok
-    notifempty
     copytruncate
 }
 ```
