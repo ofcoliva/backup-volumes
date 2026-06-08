@@ -335,9 +335,13 @@ docker compose exec borg-backup borg repo-list -r /tmp/backup-local-borg
 ```
 
 ### 3. Extrair um snapshot específico
-
+Se tiver executando os comandos via compose é necessário adicionar o comando para entrar no repositório antes de fazer a extração, se não irá para o diretório WORKDIR setado no Dockerfile.
 ```bash
-docker compose exec borg-backup borg extract -r /tmp/backup-local-borg::<NOME_DO_ARQUIVO> /destino/de/restauração
+docker compose exec borg-backup sh -c "cd / && borg extract -r /tmp/backup-local-borg::<NOME_DO_ARQUIVO> /destino/de/restauração"
+```
+No caso como nosso volumes de dados do vaultwarden fica em volumes, o comando ficaria assim:
+```bash
+docker compose exec borg-backup sh -c "cd / && borg extract -r /tmp/backup-local-borg <NOME_DO_ARQUIVO> /volumes/vaultwarden-data"
 ```
 
 ### 4. Recuperar arquivos específicos
