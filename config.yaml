@@ -17,20 +17,23 @@ keep_monthly: 6
 checks:
   - name: repository
   - name: archives
+  - name: extract
+  - name: data
+  - name: spot
     frequency: 2 weeks
 
-apprise:
-  states:
-    - finish
-    - fail
-  send_logs: true
-  services:
-    - url: "mailtos://${SMTP_USER}:${SMTP_PASS}@smtp.gmail.com:${SMTP_PORT}?to=${SMTP_TO}&name=Borgmatic&starttls=yes"
-      label: alerta-email
+# apprise:
+#   states:
+#     - finish
+#     - fail
+#   send_logs: true
+#   services:
+#     - url: "mailtos://${SMTP_USER}:${SMTP_PASS}@smtp.gmail.com:${SMTP_PORT}?to=${SMTP_TO}&name=Borgmatic&starttls=yes"
+#       label: alerta-email
 
-commands:
-  - after: repository
-    states:
-      - finish
-    run:
-      - rclone sync /volumes/backup-local-borg/ gcp-storage:BACKUP-VOLUMES --config /root/.config/rclone/rclone.conf
+# commands:
+#   - after: repository
+#     states:
+#       - finish
+#     run:
+#       - rclone sync /volumes/backup-local-borg/ gcp-storage:BACKUP-VOLUMES --config /root/.config/rclone/rclone.conf

@@ -1,16 +1,24 @@
 #!/bin/bash
 set -e
+. /scripts/common.sh
 
-LOG_FILE="/var/log/borg/borg-backup.log"
-# Função para logar com timestamp
-log() { echo "[$(date '+%Y-%m-%dT%H:%M:%S')] $1" | tee -a "$LOG_FILE"; }
+LOG_MARK="BORGMATIC_START_$(date '+%Y%m%dT%H%M%S')"
+log "$LOG_MARK" "$BORGMATIC_LOG"
+log "Iniciando backup com Borgmatic..." "$BORGMATIC_LOG"
 
-log "Iniciando backup com Borgmatic..."
+borgmatic create --verbosity 1 --stats --no-color 2>&1 | tee -a "$BORGMATIC_LOG"
 
-# O borgmatic detecta a variável BORG_PASSPHRASE automaticamente do ambiente
-if /app/borg-env/bin/borgmatic create --verbosity 1 --stats | tee -a "$LOG_FILE"; then
-  log "Backup concluído com sucesso."
+BORGMATIC_EXIT="${PIPESTATUS[0]}"
+
+BORGMATIC_TAIL="$(sed -n "/$LOG_MARK/,\$p" "$BORGMATIC_LOG" | tail -25)"
+
+if [[ "$BORGMATIC_EXIT" -eq 0 ]]; then
+  MSG="Borgmatic: Backup finalizado."
+  log "$MSG" "$BORGMATIC_LOG"
+  notify "$MSG" "$BORGMATIC_TAIL"
 else
-  log "Erro: Backup falhou."
+  MSG="Borgmatic: Backup falhou."
+  log "$MSG" "$BORGMATIC_LOG"
+  notify "$MSG" "$BORGMATIC_TAIL"
   exit 1
 fi
