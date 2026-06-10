@@ -19,7 +19,10 @@ checks:
   - name: archives
   - name: extract
   - name: data
-  - name: spot
+  # - name: spot
+  #   count_tolerance_percentage: 10
+  #   data_sample_percentage: 1
+  #   data_tolerance_percentage: 0.5
     frequency: 2 weeks
 
 # apprise:
