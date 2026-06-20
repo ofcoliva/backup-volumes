@@ -32,6 +32,8 @@ WORKDIR /app
 
 RUN git clone https://github.com/borgbackup/borg.git
 
+RUN cd borg && git checkout 31202ea4f1396220d8b758956c26f28a02d92329
+
 WORKDIR /app/borg
 
 # Definir as variáveis de ambiente para o virtual environment
