@@ -199,6 +199,8 @@ BORG_PASSPHRASE=<senha_forte>
 
 Use uma senha forte para `BORG_PASSPHRASE`.
 
+> **Importante:** Antes de executar qualquer comando interativo que referencie o `debian_container` (como os testes e reconexões do Rclone no próximo passo), é estritamente necessário realizar o build da imagem do projeto. Caso contrário, o Docker não encontrará a imagem local e o comando falhará.
+
 ### 2. Configurar o rclone
 
 O arquivo `rclone_config/rclone.conf` deve conter o remote `gcp-storage` configurado para acesso ao Google Drive.
