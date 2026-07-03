@@ -428,5 +428,5 @@ docker compose exec borg-backup borg extract --stdout -r /volumes/backup-local-b
 
 - O backup local é armazenado no volume Docker `backup-local-borg`
 - O repositório Borg é sincronizado automaticamente para o remoto Google Drive após cada execução de backup
-- Se desejar alterar o remoto ou a pasta de destino no Drive, modifique o comando `rclone sync` em `config.yaml`
-- O serviço atual assume `/volumes/vaultwarden-data` como fonte de backup. Ajuste `config.yaml` para incluir outras pastas ou volumes.
+- Se desejar alterar o remoto ou a pasta de destino no Drive, modifique as variaveis do `rclone sync` em `common.sh`, atulamente na váriavel `RCLONE_DEST`.
+- O serviço atual considera apenas o diretório `/volumes/vaultwarden-data` como origem do backup. Para ampliar a cobertura, atualize o arquivo `config.yaml` incluindo outras pastas ou volumes que também devem ser copiados. Se necessário, ajuste o `compose.yml` para declarar e montar esses novos volumes corretamente.
