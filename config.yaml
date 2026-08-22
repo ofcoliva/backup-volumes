@@ -4,7 +4,7 @@ verbosity: 1
 source_directories:
   - /volumes/vaultwarden-data
 
-archive_name_format: "{hostname}-{now:%Y-%m-%dT%H:%M:%S}" # ISO/Unix style
+archive_name_format: "Snapshot-{now:%Y-%m-%dT%H:%M:%S}" # ISO/Unix style
 
 repositories:
   - path: /volumes/backup-local-borg/

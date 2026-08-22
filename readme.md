@@ -152,7 +152,7 @@ Isso garante que o repositório local Borg seja espelhado no remoto Google Drive
 		```
 	- Testar `rclone`:
 		```bash
-		docker compose run --rm debian_container rclone lsd gcp-storage: --config /root/.config/rclone/rclone.conf
+		docker compose run --rm borg-backup rclone lsd gcp-storage: --config /root/.config/rclone/rclone.conf
 		```
 
 ### .env
@@ -199,6 +199,8 @@ BORG_PASSPHRASE=<senha_forte>
 
 Use uma senha forte para `BORG_PASSPHRASE`.
 
+> **Importante:** Antes de executar qualquer comando interativo que referencie o `borg-backup` (como os testes e reconexões do Rclone no próximo passo), é estritamente necessário realizar o build da imagem do projeto. Caso contrário, o Docker não encontrará a imagem local e o comando falhará.
+
 ### 2. Configurar o rclone
 
 O arquivo `rclone_config/rclone.conf` deve conter o remote `gcp-storage` configurado para acesso ao Google Drive.
@@ -209,7 +211,7 @@ Caso faça isso basta pular para [Teste o acesso](#teste-o-acesso) e [Iniciar o 
 ### Para reautorizar o remote no container:
 
 ```bash
-docker compose run --rm debian_container rclone config reconnect gcp-storage: --config /root/.config/rclone/rclone.conf
+docker compose run --rm borg-backup rclone config reconnect gcp-storage: --config /root/.config/rclone/rclone.conf
 ```
 
 ### Para reautorizar pelo host:
@@ -221,7 +223,7 @@ rclone config reconnect gcp-storage: --config .\rclone_config\rclone.conf
 ### Teste o acesso:
 
 ```bash
-docker compose run --rm debian_container rclone lsd gcp-storage: --config /root/.config/rclone/rclone.conf
+docker compose run --rm borg-backup rclone lsd gcp-storage: --config /root/.config/rclone/rclone.conf
 ```
 
 ### 3. Iniciar o serviço Docker Compose
@@ -380,7 +382,7 @@ docker compose exec borg-backup borg check --repo /volumes/backup-local-borg/ --
 Se estiver em qualquer outro lugar (acessando pelo nome específico do container):
 
 ```bash
-docker exec -it debian_container borg check --repo /volumes/backup-local-borg/ --verify-data -v
+docker exec -it borg-backup borg check --repo /volumes/backup-local-borg/ --verify-data -v
 
 ```
 
@@ -390,7 +392,7 @@ docker exec -it debian_container borg check --repo /volumes/backup-local-borg/ -
 ### Listar arquivos remotos do Google Drive
 
 ```bash
-docker compose run --rm debian_container rclone lsd gcp-storage: --config /root/.config/rclone/rclone.conf
+docker compose run --rm borg-backup rclone lsd gcp-storage: --config /root/.config/rclone/rclone.conf
 ```
 
 ### Comparar duas versões Borg
@@ -426,5 +428,5 @@ docker compose exec borg-backup borg extract --stdout -r /volumes/backup-local-b
 
 - O backup local é armazenado no volume Docker `backup-local-borg`
 - O repositório Borg é sincronizado automaticamente para o remoto Google Drive após cada execução de backup
-- Se desejar alterar o remoto ou a pasta de destino no Drive, modifique o comando `rclone sync` em `config.yaml`
-- O serviço atual assume `/volumes/vaultwarden-data` como fonte de backup. Ajuste `config.yaml` para incluir outras pastas ou volumes.
+- Se desejar alterar o remoto ou a pasta de destino no Drive, modifique as variaveis do `rclone sync` em `common.sh`, atulamente na váriavel `RCLONE_DEST`.
+- O serviço atual considera apenas o diretório `/volumes/vaultwarden-data` como origem do backup. Para ampliar a cobertura, atualize o arquivo `config.yaml` incluindo outras pastas ou volumes que também devem ser copiados. Se necessário, ajuste o `compose.yml` para declarar e montar esses novos volumes corretamente.
