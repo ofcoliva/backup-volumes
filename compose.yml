@@ -1,6 +1,4 @@
 volumes:
-  vaultwarden-data:
-    name: vaultwarden-data
   backup-local-borg:
     name: backup-local-borg
 
@@ -20,8 +18,8 @@ services:
       - SMTP_TO=${SMTP_TO}
       - SMTP_PORT=${SMTP_PORT}
     volumes:
-      - vaultwarden-data:/volumes/vaultwarden-data
-      - backup-local-borg:/volumes/backup-local-borg
+      - ${DATA_DIR}:/volumes/data
+      # - backup-local-borg:/volumes/backup-local-borg
 
       - /etc/localtime:/etc/localtime:ro
 
