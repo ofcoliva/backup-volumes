@@ -47,6 +47,7 @@ SMTP_USER=<seu_usuario>
 SMTP_PASS=<sua_senha>
 SMTP_PORT=587
 SMTP_TO=<destinatario>
+DATA_DIR=<diretório_de_dados>
 BORG_PASSPHRASE=<senha_forte>
 ```
 
