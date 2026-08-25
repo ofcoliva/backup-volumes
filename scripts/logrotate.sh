@@ -8,6 +8,6 @@ log "Iniciando Logrotate" "$LOGROTATE_LOG"
 chown root:root /etc/logrotate.conf
 chmod 0644 /etc/logrotate.conf
 
-logrotate -s "$STATUS_FILE" "$LOGROTATE_CONFIG" | tee -a "$LOGROTATE_LOG"
+logrotate -s "$LOGROTATE_STATUS" "$LOGROTATE_CONFIG" | tee -a "$LOGROTATE_LOG"
 
 log "Logrotate finalizado" "$LOGROTATE_LOG"
