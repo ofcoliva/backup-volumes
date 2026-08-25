@@ -6,10 +6,18 @@ LOG_MARK="RCLONE_START_$(date '+%Y%m%dT%H%M%S')"
 log "$LOG_MARK" "$RCLONE_LOG"
 log "Iniciando Upload dos backups criados" "$RCLONE_LOG"
 
+# OTIMIZAÇÕES ADICIONADAS AQUI:
+# --drive-chunk-size 64M (Padrão é 8M. Aumentar isso acelera muito os arquivos grandes)
+# --transfers 8 (Padrão é 4. Faz upload de mais arquivos simultaneamente)
+# --checkers 16 (Padrão é 8. Verifica mais arquivos simultaneamente)
+# Removido: --checksum (Foi removido do sync porque você já faz um 'rclone check' logo depois. Fazer isso no sync apenas dobra o uso do seu disco à toa).
+
 rclone sync "$REPO" "$RCLONE_DEST" \
     --config "$RCLONE_CONFIG" \
     --fast-list \
-    --checksum \
+    --drive-chunk-size 64M \
+    --transfers 8 \
+    --checkers 16 \
     -v 2>&1 | tee -a "$RCLONE_LOG"
 
 SYNC_STATUS="${PIPESTATUS[0]}"
@@ -28,11 +36,12 @@ if [[ "$SYNC_STATUS" -eq 0 ]]; then
         --config "$RCLONE_CONFIG" \
         --fast-list \
         --checksum \
+        --transfers 8 \
+        --checkers 16 \
         --one-way \
         -v 2>&1 | tee -a "$RCLONE_LOG"
 
     CHECK_STATUS="${PIPESTATUS[0]}"
-
 
     if [[ "$CHECK_STATUS" -eq 0 ]]; then
         log "Rclone: Verificação de integridade concluída com sucesso." "$RCLONE_LOG"
